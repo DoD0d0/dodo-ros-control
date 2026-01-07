@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  dodo_ros:
+    image: dodo_ros_control:humble
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: dodo_ros_control
+    volumes:
+      - ./ros2_ws:/ros2_ws
+      - ./assets:/assets
+      - ./models:/models
+    tty: true
+    stdin_open: true
