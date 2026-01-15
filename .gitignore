@@ -57,3 +57,12 @@ docker/tmp/
 *.swp
 *.tmp
 *~
+
+########################################
+# mujoco
+########################################
+mujoco/env/
+mujoco/venv/
+mujoco/.venv/
+mujoco/models/*.onnx
+mujoco/models/*.pt
