@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dodo_mujoco_bridge</name>
+  <version>0.0.0</version>
+  <description>MuJoCo sim2sim bridge for Dodo robot</description>
+
+  <maintainer email="your@email.com">your-name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
