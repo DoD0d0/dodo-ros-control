@@ -30,6 +30,8 @@ ros2 run dodo_ros_control inference_node
 dodo-ros-control/
 ├── docker/                 # Dockerfiles and container entrypoint
 ├── scripts/                # Convenience scripts (container run, attach)
+├── isaac_sim/              # Isaac Sim launch and controller code
+├── mujoco/                 # Host-side MuJoCo sim2sim validation (optional)
 ├── ros2_ws/                # ROS 2 workspace (mounted into container)
 │   └── src/
 │       └── dodo_ros_control/
@@ -40,6 +42,7 @@ dodo-ros-control/
 │           └── interface_node.py
 ├── models/                 # Trained RL policies (not tracked by git)
 ├── assets/                 # Robot-specific assets (URDF, calib, etc.)
+├── docker-compose.yml
 └── README.md
 ```
 
@@ -73,6 +76,11 @@ This repository is designed to be used **inside a Docker container**.
 - Python: 3.10
 - Architecture: amd64 / arm64 (auto-detected)
 
+### Versions (as configured)
+- ROS base image: `osrf/ros:humble`
+- ROS GUI image: `osrf/ros:humble-desktop-full`
+- Isaac Sim image: `nvcr.io/nvidia/isaac-sim:5.1.0`
+
 ---
 
 ## Docker Usage
@@ -100,6 +108,14 @@ Run with GUI support (optional):
 ```bash
 ./scripts/dodo_run.sh --gui
 ```
+
+### Script Options
+- `scripts/dodo_run.sh [--gui]`
+  - `--gui`: uses `docker/Dockerfile.gui` image (`dodo_ros_control:humble-gui`)
+- `scripts/run_isaac_sim.sh`
+  - no CLI options; runs Isaac Sim GUI container
+- `scripts/run_isaac_ros.sh`
+  - no CLI options; attaches if container is running, otherwise starts a new one
 
 ---
 
@@ -129,6 +145,46 @@ Run example nodes:
 ros2 run dodo_ros_control dummy_node
 ros2 run dodo_ros_control inference_node
 ```
+
+### ROS 2 Nodes, Topics, Services
+
+#### dodo_ros_control
+- Nodes
+  - `dodo_inference_node` (console: `ros2 run dodo_ros_control inference_node`)
+  - `dummy_node` (console: `ros2 run dodo_ros_control dummy_node`)
+- Topics / services
+  - None defined yet (mock CAN only; no ROS pub/sub/service calls in code)
+- Parameters / options (current hard-coded defaults)
+  - `num_joints = 6`
+  - `publish_rate_hz = 50.0`
+  - CAN defaults in interface: `channel = can0`, `bitrate = 1000000`
+
+#### dodo_mujoco_bridge
+- Nodes
+  - `dodo_mujoco_hello` (console: `ros2 run dodo_mujoco_bridge hello_node`)
+- Topics / services
+  - None (placeholder node only)
+
+---
+
+## Isaac Sim (optional)
+
+Start Isaac Sim GUI container:
+
+```bash
+./scripts/run_isaac_sim.sh
+```
+
+Example app script (runs in Isaac Sim Python environment):
+- `isaac_sim/launch/run_dodo_rl.py`
+
+Key options (current hard-coded defaults):
+- `policy_name = "stand"`
+- `action_scale = 0.5`
+- `headless = False`
+- `dodo_usd_path` is hard-coded in the script
+
+ROS topics/services are not used in the Isaac Sim pipeline in this repo.
 
 ---
 
