@@ -23,6 +23,11 @@ ros2 run dodo_mujoco_bridge hello_node
 This node only prints a startup message and spins.
 It is intended as a **structural placeholder**.
 
+### Node Details
+
+- Node name: `dodo_mujoco_hello`
+- Topics / services: none (placeholder)
+
 ## Intended Future Role
 
 In later stages, this package will:
