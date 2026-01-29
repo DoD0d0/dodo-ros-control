@@ -4,6 +4,8 @@ Robot description files used for simulation and deployment.
 
 Includes:
 - URDF
+- USD
+- XML
 - Meshes
 - USD files
 
